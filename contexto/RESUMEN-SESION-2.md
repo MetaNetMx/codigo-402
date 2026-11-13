@@ -17,6 +17,13 @@ Pasar de **pagos manuales** (Sesión 1) a **cobrar por uso de una API** con el e
 4. **`cliente.js`**: cuenta **amigo** paga 0.01 USDC → facilitador liquida → API responde **200** con `"pagado": true`.
 5. **Hash** del settlement en README.
 
+## De la charla (transcripción local)
+
+- Repaso del **HTTP 402** (desde los 90) y cómo **x402** lo usa para micropagos.
+- Rol del **facilitador** (quickstart oficial / x402.org): verificar y liquidar sin tocar la red desde tu API.
+- Flujo del **cliente**: pide → 402 → firma → vuelve a pedir con pago → 200.
+- Walkthrough en vivo de bloques: Express gratis → middleware x402 → `cliente.js`.
+
 ## Mensajes del taller (síntesis)
 
 - **402** existía hace años; **x402** lo vuelve usable para micropagos y agentes.
