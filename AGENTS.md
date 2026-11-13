@@ -10,7 +10,9 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 
 ## Contexto del taller
 
-- Resumen de la Sesión 1 (charla): `contexto/RESUMEN-CHARLA.md`
+- Resumen Sesión 1: `contexto/RESUMEN-CHARLA.md` (o `RESUMEN-SESION-1` en local)
+- Resumen Sesión 2 (x402): `contexto/RESUMEN-SESION-2.md`
+- Checklist Sesión 2: `contexto/CONTEXTO-SESION-2.md`
 - Duda técnica Stellar / x402: usar **Stellar Raven MCP** (`https://raven.stellar.org/mcp`) antes de inventar APIs.
 
 ## Estructura
