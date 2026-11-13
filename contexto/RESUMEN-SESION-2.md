@@ -1,50 +1,58 @@
-# Resumen ejecutivo — Charla Sesión 2 (x402)
+# Resumen ejecutivo — Charla Sesión 2
 
-**Fuente:** `S2-Codigo-402.mp4` · Drive: https://drive.google.com/drive/folders/1BXRgE09krA3H8HKOX72yy5iHTICGROcb  
-**Transcripción local:** `transcripcion-sesion-2.md` (generada con Whisper; revisar nombres técnicos)
+**Fuente:** grabación *S2 - Código 402* (~1 h 5 min), carpeta BAF en Google Drive.  
+**En GitHub:** solo este resumen. Video y transcripción completa quedan **en local** (no se suben por tamaño).
 
-> En Cursor: `@AGENTS.md` + `@contexto/RESUMEN-SESION-2.md` + guía oficial en `.md`
-
-## Objetivo de la sesión
-
-Pasar de **pagos manuales** (Sesión 1) a **cobrar por uso de una API** con el estándar **x402** en **Stellar testnet**.
-
-## Qué construiste (guía + repo)
-
-1. **API Express** en puerto **3001**, ruta **`/dato`**.
-2. Primero ruta **gratis** (HTTP **200**).
-3. Misma ruta con **middleware x402** → sin pago: **402** + cabecera `PAYMENT-REQUIRED`.
-4. **`cliente.js`**: cuenta **amigo** paga 0.01 USDC → facilitador liquida → API responde **200** con `"pagado": true`.
-5. **Hash** del settlement en README.
-
-## De la charla (transcripción local)
-
-- Repaso del **HTTP 402** (desde los 90) y cómo **x402** lo usa para micropagos.
-- Rol del **facilitador** (quickstart oficial / x402.org): verificar y liquidar sin tocar la red desde tu API.
-- Flujo del **cliente**: pide → 402 → firma → vuelve a pedir con pago → 200.
-- Walkthrough en vivo de bloques: Express gratis → middleware x402 → `cliente.js`.
-
-## Mensajes del taller (síntesis)
-
-- **402** existía hace años; **x402** lo vuelve usable para micropagos y agentes.
-- El **facilitador** evita que tu API hable directo con la red para verificar cada pago.
-- **Cuenta que cobra:** `MI_PUBLICA` (tu wallet Sesión 1).
-- **Cuenta que paga en el ejemplo:** `AMIGO_SECRETA` (debe tener USDC).
-- Librerías: `@x402/core`, `@x402/express`, `@x402/fetch`, `@x402/stellar` (v2.30.0 en la guía).
-
-## Entregable para Apex / bootcamp
-
-Repo público `codigo-402` con los **3 commits de la sesión 2** y README actualizado.
-
-## Tu estado (referencia)
-
-- Repo: https://github.com/MetaNetMx/codigo-402  
-- Ejemplo hash x402 en README (sesión ya implementada en código).
-
-## Próximo paso
-
-**Sesión 3:** agente autónomo con **límite de gasto** que consuma tu API.
+> En Cursor: `@AGENTS.md` + `@contexto/RESUMEN-SESION-2.md`
 
 ---
 
-*Tras generarse la transcripción, amplía este resumen con citas desde `transcripcion-sesion-2.md` si hace falta detalle de la charla.*
+## Quién y de qué va
+
+- Continuación del bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar).
+- Facilitación: **Fer** (logística, Apex/GitHub, asistencia), **Montse** y **Lío** (Nirium — pagos agénticos).
+- Objetivo del día: pasar del pago manual (Sesión 1) a **cobrar por uso de una API** con **x402** en Stellar testnet.
+
+---
+
+## Mensajes clave (conceptos antes del código)
+
+1. **HTTP 402 Payment Required** — reservado desde los años 90; casi no se usaba hasta **x402**.
+2. **Flujo x402** — el cliente pide el recurso → la API responde **402** con instrucciones (`PAYMENT-REQUIRED`) → el cliente **firma y paga** → vuelve a pedir con el pago → la API entrega **200** y el dato.
+3. **Facilitador** (`https://www.x402.org/facilitator`) — verifica y liquida el pago en Stellar; el desarrollador solo define ruta, precio y cuenta que cobra.
+4. **Precio de la demo:** **0.01 USDC** en testnet; sin dinero real.
+5. **Seguridad:** `.env` fuera de git; hoy también `api.log` en `.gitignore`.
+6. **Llaves:** `MI_PUBLICA` recibe; `AMIGO_SECRETA` firma el pago del cliente de ejemplo (cuenta del “amigo” de la Sesión 1).
+
+---
+
+## Lo que se construyó en vivo (3 commits)
+
+| Commit | Entregable |
+|--------|------------|
+| 1 | `server.js` — Express, ruta `/dato` **gratis** (HTTP 200), scripts `npm run api` / `npm run cliente` |
+| 2 | `server.js` — middleware **x402**; `curl -i /dato` devuelve **402** |
+| 3 | `cliente.js` — cliente oficial Stellar adaptado; pago real; hash en README |
+
+**Librerías:** Express 5.3.0, `@x402/core`, `@x402/express`, `@x402/fetch`, `@x402/stellar` (v2.30.0).
+
+---
+
+## Entregable 2 (participante)
+
+- API en puerto **3001**, ruta **`/dato`** que cobra con x402.
+- Cliente que paga desde la cuenta del amigo (`AMIGO_SECRETA`).
+- Sección **“Mi API cobra con x402”** en README con hash y enlace Stellar Expert.
+- Tres commits visibles en GitHub → cuenta para **Apex**.
+
+---
+
+## Puente a Sesión 3
+
+Llegar con la API de hoy funcionando: en la Sesión 3 un **agente** pagará la API automáticamente, con **tope de gasto**.
+
+---
+
+## Nota
+
+Resumen derivado de transcripción automática (Whisper); para precisión técnica usar la guía de participantes, [developers.stellar.org](https://developers.stellar.org/docs/build/agentic-payments/x402) y **Stellar Raven MCP**.

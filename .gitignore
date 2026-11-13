@@ -4,11 +4,12 @@ node_modules
 contexto/*.mp4
 contexto/*.wav
 contexto/transcripcion-completa.md
+contexto/transcripcion-sesion-2-completa.md
+contexto/transcripcion-sesion-2.md
 contexto/transcript-segments.json
+contexto/transcript-segments-s2.json
+contexto/transcript-sesion-2.json
 contexto/transcribir.py
 contexto/transcribir-s2.py
-contexto/*.mp4
-contexto/*.wav
-contexto/transcripcion-sesion-2.md
-contexto/transcript-sesion-2.json
 contexto/transcribe-s2-log.txt
+contexto/transcribe-log.txt
