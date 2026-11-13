@@ -25,7 +25,8 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 ## Sesiones
 
 1. ✅ Cuentas y primer pago (este repo).
-2. ⏳ API con **x402** — referencia: [x402 Stellar](https://github.com/stellar/x402-stellar).
+2. ✅ API con **x402** (`server.js`, `cliente.js`, hash en README).
+3. ⏳ Sesión 3: agente con tope de gasto.
 
 ## Entorno local
 
