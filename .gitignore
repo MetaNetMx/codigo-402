@@ -14,5 +14,7 @@ contexto/transcript-sesion-2.json
 contexto/transcribir.py
 contexto/transcribir-s2.py
 contexto/transcribir-s3.py
+contexto/.venv-transcribe/
+contexto/audio-16k-s3.wav
 contexto/transcribe-s2-log.txt
 contexto/transcribe-log.txt
