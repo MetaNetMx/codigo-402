@@ -20,13 +20,23 @@
 - **Copia de trabajo:** `C:\Users\Administrator\codigo-402\contexto\S2-Codigo-402.mp4`
 - **Transcripción local:** `transcripcion-sesion-2-completa.md` / `transcript-segments-s2.json` (no en git)
 
+## Grabación Sesión 3
+
+- **Carpeta Drive:** https://drive.google.com/drive/folders/1BXRgE09krA3H8HKOX72yy5iHTICGROcb
+- **Archivo:** `S3 - Código 402.mp4` (nombre en Drive puede variar)
+- **ID Drive:** `16zrxxUdvzBW6GIlyQt0C7oae8NyLfA42`
+- **Tamaño:** ~146 MB · **Duración:** ~1 h 16 min
+- **Descarga local:** `G:\Mi unidad\Stellar codigo-402\contexto\S3-Codigo-402.mp4`
+- **Copia de trabajo:** `C:\Users\Administrator\codigo-402\contexto\S3-Codigo-402.mp4`
+- **Transcripción local:** `transcripcion-sesion-3-completa.md` / `transcript-segments-s3.json` (no en git)
+
 ## Serie y calendario (referencia pública)
 
 - Evento: [Código 402: Agentes que pagan (Luma)](https://luma.com/ljzvwv35)
 - Organización: BAF México × Embajadores Stellar
 - **Sesión 1 (10 nov):** primera cuenta y primer pago en Stellar (testnet)
 - **Sesión 2 (12 nov):** cobrar API con x402
-- **Sesión 3:** agente con tope de gasto
+- **Sesión 3 (18 nov):** agente con wallet propia y tope de gasto
 - Repo del participante: https://github.com/MetaNetMx/codigo-402
 
 ## Documentación oficial relacionada

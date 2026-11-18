@@ -13,6 +13,8 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 - Resumen Sesión 1: `contexto/RESUMEN-CHARLA.md` (o `RESUMEN-SESION-1` en local)
 - Resumen Sesión 2 (x402): `contexto/RESUMEN-SESION-2.md`
 - Checklist Sesión 2: `contexto/CONTEXTO-SESION-2.md`
+- Resumen Sesión 3 (agente): `contexto/RESUMEN-SESION-3.md`
+- Checklist Sesión 3: `contexto/CONTEXTO-SESION-3.md`
 - Duda técnica Stellar / x402: usar **Stellar Raven MCP** (`https://raven.stellar.org/mcp`) antes de inventar APIs.
 
 ## Estructura
@@ -22,13 +24,15 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 | `crear-cuentas.js` | Cuentas, Friendbot, trustline USDC |
 | `conseguir-usdc.js` | 5 USDC testnet |
 | `primer-pago.js` | Primer pago USDC + memo |
-| `README.md` | Hash del primer pago (Stellar Expert) |
+| `server.js` / `cliente.js` | API x402 y cliente manual |
+| `crear-agente.js` / `agente.js` | Wallet del agente y cliente autónomo |
+| `README.md` | Hashes de pagos (Stellar Expert) |
 
 ## Sesiones
 
 1. ✅ Cuentas y primer pago (este repo).
 2. ✅ API con **x402** (`server.js`, `cliente.js`, hash en README).
-3. ⏳ Sesión 3: agente con tope de gasto.
+3. ✅ Agente con wallet propia, tope y reintentos (`agente.js`, hash en README).
 
 ## Entorno local
 

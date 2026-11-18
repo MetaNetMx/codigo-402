@@ -6,10 +6,13 @@ contexto/*.wav
 contexto/transcripcion-completa.md
 contexto/transcripcion-sesion-2-completa.md
 contexto/transcripcion-sesion-2.md
+contexto/transcripcion-sesion-3-completa.md
 contexto/transcript-segments.json
 contexto/transcript-segments-s2.json
+contexto/transcript-segments-s3.json
 contexto/transcript-sesion-2.json
 contexto/transcribir.py
 contexto/transcribir-s2.py
+contexto/transcribir-s3.py
 contexto/transcribe-s2-log.txt
 contexto/transcribe-log.txt
