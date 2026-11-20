@@ -14,3 +14,7 @@ Repositorio codigo-402
 - Pago del agente a mi API: af936bedf8aba96c4de5bc13a9ad9655fd9615d20019a9d8bda10aeaa8702ef4
 - Verlo: https://stellar.expert/explorer/testnet/tx/af936bedf8aba96c4de5bc13a9ad9655fd9615d20019a9d8bda10aeaa8702ef4
 
+## Mi verificador
+- Pago que verifiqué con RPC: 61f3ea35bf0e3af8d07329a038eeb4f9095b52eb1437817942b5f59751733699
+- Verlo: https://stellar.expert/explorer/testnet/tx/61f3ea35bf0e3af8d07329a038eeb4f9095b52eb1437817942b5f59751733699
+
