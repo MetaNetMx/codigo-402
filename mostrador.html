@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La tiendita</title>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f3efe6; color: #1c1915; font-family: Georgia, "Iowan Old Style", serif; }
+    main { width: min(920px, calc(100% - 32px)); padding: 28px 0; }
+    .kicker { margin: 0 0 8px; font: 600 12px/1 "Segoe UI", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6d645b; }
+    h1 { margin: 0 0 8px; font-size: 40px; font-weight: 500; letter-spacing: -0.03em; }
+    .intro { margin: 0 0 22px; max-width: 38rem; font: 17px/1.45 "Segoe UI", sans-serif; color: #4a433c; }
+    .partes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    article, .resultado { background: #fffdf8; border: 1px solid #d8d0c4; padding: 22px; }
+    .rol { margin: 0; font: 600 12px/1 "Segoe UI", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6d645b; }
+    .etiqueta { margin: 18px 0 0; font: 15px/1.3 "Segoe UI", sans-serif; }
+    .numero { margin: 4px 0 10px; font-size: 56px; line-height: 1; font-weight: 500; }
+    input[type="range"] { width: 100%; accent-color: #1c1915; }
+    .cartera { margin: 18px 0 0; font: 14px/1.4 "Segoe UI", sans-serif; color: #4a433c; }
+    .cartera b { color: #1c1915; font-weight: 600; }
+    .resultado { margin-top: 16px; display: grid; gap: 14px; }
+    #frase { margin: 0; min-height: 3.2em; font: 18px/1.45 "Segoe UI", sans-serif; }
+    .si { color: #0d6b3d; }
+    .no { color: #8a2e1b; }
+    button { height: 52px; border: 0; background: #1c1915; color: #fffdf8; font: 600 16px "Segoe UI", sans-serif; cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .45; }
+    .pie { display: flex; justify-content: space-between; gap: 16px; margin-top: 8px; font: 14px/1.4 "Segoe UI", sans-serif; }
+    a { color: #1c1915; }
+    @media (max-width: 720px) {
+      h1 { font-size: 32px; }
+      .partes { grid-template-columns: 1fr; }
+      .numero { font-size: 48px; }
+      .pie { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="kicker">Caja del agente</p>
+    <h1>La tiendita</h1>
+    <p class="intro">El tendero pone lo que cuesta. El cliente le dice a su agente hasta cuánto puede soltar. Si el cobro cabe, el dinero de práctica pasa de una cartera a la otra.</p>
+    <div class="partes">
+      <article>
+        <p class="rol">Tendero</p>
+        <p class="etiqueta">El cobro</p>
+        <p class="numero" id="ver-cobro">0.01</p>
+        <input id="cobro" type="range" min="0.01" max="0.20" step="0.01" value="0.01" aria-label="Cobro del tendero">
+        <p class="cartera">Cartera <b id="cuenta-tendero">…</b><br>Saldo <b id="saldo-tendero">…</b></p>
+      </article>
+      <article>
+        <p class="rol">Cliente</p>
+        <p class="etiqueta">El tope de su agente</p>
+        <p class="numero" id="ver-tope">0.02</p>
+        <input id="tope" type="range" min="0.01" max="0.20" step="0.01" value="0.02" aria-label="Tope del cliente">
+        <p class="cartera">Cartera <b id="cuenta-cliente">…</b><br>Saldo <b id="saldo-cliente">…</b></p>
+      </article>
+    </div>
+    <section class="resultado">
+      <p id="frase">Revisando las dos carteras…</p>
+      <button id="pagar" type="button" disabled>Pagar</button>
+      <div class="pie">
+        <span>Red de práctica. Este dinero no es real.</span>
+        <a href="/">Volver a la caja fija</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const cobro = document.getElementById("cobro");
+    const tope = document.getElementById("tope");
+    const frase = document.getElementById("frase");
+    const pagar = document.getElementById("pagar");
+    let saldoCliente = null;
+    let enviando = false;
+
+    function cents(v) { return (Math.round(Number(v) * 100) / 100).toFixed(2); }
+    function corto(cuenta) {
+      if (!cuenta) return "sin cartera";
+      return cuenta.slice(0, 4) + "…" + cuenta.slice(-4);
+    }
+    function dinero(valor) { return valor == null ? "no disponible" : cents(valor) + " USDC"; }
+
+    async function cargar(conservarFrase) {
+      const estado = await fetch("/tienda/estado").then((r) => r.json());
+      document.getElementById("cuenta-tendero").textContent = corto(estado.tendero?.cuenta);
+      document.getElementById("cuenta-cliente").textContent = corto(estado.cliente?.cuenta);
+      document.getElementById("saldo-tendero").textContent = dinero(estado.tendero?.usdc);
+      document.getElementById("saldo-cliente").textContent = dinero(estado.cliente?.usdc);
+      saldoCliente = estado.cliente?.usdc == null ? null : Number(estado.cliente.usdc);
+      if (!conservarFrase) await revisar();
+    }
+
+    async function revisar() {
+      const precio = cents(cobro.value);
+      const limite = cents(tope.value);
+      document.getElementById("ver-cobro").textContent = precio;
+      document.getElementById("ver-tope").textContent = limite;
+      if (enviando) return;
+      const decision = await fetch("/tienda/decidir?precio=" + precio + "&tope=" + limite).then((r) => r.json());
+      const alcanza = saldoCliente == null || Number(precio) <= saldoCliente + 1e-8;
+      const puede = decision.pagar && alcanza;
+      frase.className = puede ? "si" : "no";
+      frase.textContent = puede
+        ? decision.respuesta
+        : decision.pagar
+          ? "Sí cabe en el tope, pero el cliente solo tiene " + cents(saldoCliente) + " USDC. No se firmó nada."
+          : decision.respuesta;
+      pagar.disabled = !puede;
+      pagar.textContent = puede ? "Pagar " + precio : "No se paga";
+    }
+
+    pagar.addEventListener("click", async () => {
+      enviando = true;
+      pagar.disabled = true;
+      frase.className = "";
+      frase.textContent = "Enviando el pago de práctica…";
+      try {
+        const r = await fetch("/tienda/cobrar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ precio: cents(cobro.value), tope: cents(tope.value) }),
+        }).then((x) => x.json());
+        frase.className = r.firmado ? "si" : "no";
+        frase.textContent = r.respuesta || "No se pudo enviar.";
+        if (r.firmado && String(r.enlace || "").startsWith("https://stellar.expert/explorer/testnet/tx/")) {
+          frase.append(" ");
+          const a = document.createElement("a");
+          a.href = r.enlace;
+          a.textContent = "Abrir el recibo";
+          frase.append(a);
+          frase.append(".");
+        }
+        enviando = false;
+        await cargar(r.firmado);
+        if (r.firmado) {
+          const precio = cents(cobro.value);
+          const alcanza = saldoCliente == null || Number(precio) <= saldoCliente + 1e-8;
+          pagar.disabled = !alcanza;
+          pagar.textContent = alcanza ? "Pagar " + precio : "No se paga";
+        }
+      } catch {
+        frase.className = "no";
+        frase.textContent = "No se pudo enviar. Inténtalo otra vez. No se firmó nada.";
+        enviando = false;
+        await cargar(false);
+      }
+    });
+
+    cobro.addEventListener("input", revisar);
+    tope.addEventListener("input", revisar);
+    cargar();
+  </script>
+</body>
+</html>
