@@ -8,6 +8,23 @@ Un agente con tope que paga y verifica cada cobro en Stellar.
 
 Cada integrante explica cómo se corre su parte en `partes/<usuario>/README.md`.
 
+## Deploy
+
+La app está publicada en [Railway](https://caja-del-agente-production.up.railway.app), solo en Stellar testnet. El dinero es de práctica. El servidor arranca con `npm start`.
+
+- [Caja fija](https://caja-del-agente-production.up.railway.app): el cobro es 0.01 y el tope es 0.02. Confirmar dice si ese cobro cabe. Un cobro de 0.05 se detiene y no firma nada.
+- [Tiendita](https://caja-del-agente-production.up.railway.app/tienda): el tendero escribe el cobro y el cliente escribe el tope. Si el cobro cabe, Enviar escribe ese monto en la red, de la cartera del cliente a la del tendero, y deja el recibo.
+
+## Demo Day · viernes 27, 18:00 a 20:00
+
+Track: Agente que paga (x402).
+
+1. El problema: alguien dice que ya pagó y el negocio suelta el producto sin saber si el dinero llegó.
+2. Confirmar 0.01: el agente puede pagar porque cabe en el tope de 0.02 USDC.
+3. Probar 0.05: no se firma nada, porque pasa el tope.
+4. La evidencia: https://stellar.expert/explorer/testnet/tx/af936bedf8aba96c4de5bc13a9ad9655fd9615d20019a9d8bda10aeaa8702ef4
+5. Qué sigue: un pago en pesos con CoDi dispara este mismo agente.
+
 ## Equipo y partes
 
 - [MetaNetMx](https://github.com/MetaNetMx): [su parte](partes/MetaNetMx/README.md)
