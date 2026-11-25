@@ -16,6 +16,7 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 - Resumen Sesión 3 (agente): `contexto/RESUMEN-SESION-3.md`
 - Checklist Sesión 3: `contexto/CONTEXTO-SESION-3.md`
 - Guía Sesión 4: `contexto/Codigo-402-Sesion-4-Guia.md`
+- Guía Sesión 5: taller de equipo. Cada parte vive en `partes/<usuario>/`, con 3 commits y el README final.
 - Duda técnica Stellar / x402: usar **Stellar Raven MCP** (`https://raven.stellar.org/mcp`) antes de inventar APIs.
 
 ## Estructura
@@ -28,6 +29,7 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 | `server.js` / `cliente.js` | API x402 y cliente manual |
 | `crear-agente.js` / `agente.js` | Wallet del agente y cliente autónomo |
 | `verificar.js` | Consulta un hash en la RPC y valida USDC, monto y destinatario |
+| `partes/MetaNetMx/` | Parte del equipo: decide si el cobro cabe en el tope |
 | `README.md` | Hashes de pagos (Stellar Expert) |
 
 ## Sesiones
@@ -36,6 +38,7 @@ Bootcamp **Código 402: Agentes que pagan** (BAF × Embajadores Stellar). Este r
 2. ✅ API con **x402** (`server.js`, `cliente.js`, hash en README).
 3. ✅ Agente con wallet propia, tope y reintentos (`agente.js`, hash en README).
 4. ✅ Verificador on-chain (`verificar.js`, pruebas, hash en README).
+5. ✅ Parte del equipo (`partes/MetaNetMx/`, tope, pruebas, hash y README final).
 
 ## Entorno local
 

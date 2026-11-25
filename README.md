@@ -1,5 +1,16 @@
-# codigo-402
-Repositorio codigo-402
+# Caja del agente
+
+Un agente con tope que paga y verifica cada cobro en Stellar.
+
+**Track:** Agente que paga · Código 402 · BAF México × Programa de Embajadores de Stellar · Stellar testnet (dinero de prueba)
+
+## Cómo correrlo
+
+Cada integrante explica cómo se corre su parte en `partes/<usuario>/README.md`.
+
+## Equipo y partes
+
+- [MetaNetMx](https://github.com/MetaNetMx): [su parte](partes/MetaNetMx/README.md)
 
 ## Mi primer pago en Stellar
 - Hash: 2c1f966b9b69f85e37b30ed1cdd1680b85330409b8c4ec0cf6ad3614632a886d
