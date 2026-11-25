@@ -18,7 +18,7 @@ test("no prepara un cobro por encima del tope", () => {
 });
 
 test("no prepara un cobro mayor al máximo de la tiendita", () => {
-  const r = prepararMostrador({ precio: "0.50", tope: "1.00", destino: DESTINO, destinoEsperado: DESTINO });
+  const r = prepararMostrador({ precio: "6.00", tope: "7.00", destino: DESTINO, destinoEsperado: DESTINO });
   assert.equal(r.pagar, false);
   assert.match(r.respuesta, /máximo/);
 });

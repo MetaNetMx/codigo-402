@@ -14,8 +14,8 @@
     article, .resultado { background: #fffdf8; border: 1px solid #d8d0c4; padding: 22px; }
     .rol { margin: 0; font: 600 12px/1 "Segoe UI", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #6d645b; }
     .etiqueta { margin: 18px 0 0; font: 15px/1.3 "Segoe UI", sans-serif; }
-    .numero { margin: 4px 0 10px; font-size: 56px; line-height: 1; font-weight: 500; }
-    input[type="range"] { width: 100%; accent-color: #1c1915; }
+    .numero { display: block; width: 100%; margin: 4px 0 0; border: 0; border-bottom: 1px solid #d8d0c4; background: transparent; color: inherit; font: 500 56px/1 Georgia, "Iowan Old Style", serif; }
+    .numero:focus { outline: none; border-bottom-color: #1c1915; }
     .cartera { margin: 18px 0 0; font: 14px/1.4 "Segoe UI", sans-serif; color: #4a433c; }
     .cartera b { color: #1c1915; font-weight: 600; }
     .resultado { margin-top: 16px; display: grid; gap: 14px; }
@@ -38,20 +38,18 @@
   <main>
     <p class="kicker">Caja del agente</p>
     <h1>La tiendita</h1>
-    <p class="intro">El tendero pone lo que cuesta. El cliente le dice a su agente hasta cuánto puede soltar. Si el cobro cabe, el dinero de práctica pasa de una cartera a la otra.</p>
+    <p class="intro">Escribe el cobro y el tope. Si el cobro cabe, el envío se escribe en ese momento en la red de práctica, de la cartera del cliente a la del tendero.</p>
     <div class="partes">
       <article>
         <p class="rol">Tendero</p>
-        <p class="etiqueta">El cobro</p>
-        <p class="numero" id="ver-cobro">0.01</p>
-        <input id="cobro" type="range" min="0.01" max="0.20" step="0.01" value="0.01" aria-label="Cobro del tendero">
+        <label class="etiqueta" for="cobro">El cobro</label>
+        <input id="cobro" class="numero" type="text" inputmode="decimal" value="0.01" aria-label="Cobro del tendero" autocomplete="off">
         <p class="cartera">Cartera <b id="cuenta-tendero">…</b><br>Saldo <b id="saldo-tendero">…</b></p>
       </article>
       <article>
         <p class="rol">Cliente</p>
-        <p class="etiqueta">El tope de su agente</p>
-        <p class="numero" id="ver-tope">0.02</p>
-        <input id="tope" type="range" min="0.01" max="0.20" step="0.01" value="0.02" aria-label="Tope del cliente">
+        <label class="etiqueta" for="tope">El tope de su agente</label>
+        <input id="tope" class="numero" type="text" inputmode="decimal" value="0.02" aria-label="Tope del cliente" autocomplete="off">
         <p class="cartera">Cartera <b id="cuenta-cliente">…</b><br>Saldo <b id="saldo-cliente">…</b></p>
       </article>
     </div>
@@ -71,8 +69,16 @@
     const pagar = document.getElementById("pagar");
     let saldoCliente = null;
     let enviando = false;
+    let revision = 0;
 
     function cents(v) { return (Math.round(Number(v) * 100) / 100).toFixed(2); }
+    function escrito(v) {
+      const t = String(v ?? "").trim().replace("$", "").replace(",", ".");
+      if (!/^\d+(\.\d{1,2})?$/.test(t)) return null;
+      const n = Number(t);
+      if (!Number.isFinite(n) || n <= 0) return null;
+      return n.toFixed(2);
+    }
     function corto(cuenta) {
       if (!cuenta) return "sin cartera";
       return cuenta.slice(0, 4) + "…" + cuenta.slice(-4);
@@ -90,34 +96,44 @@
     }
 
     async function revisar() {
-      const precio = cents(cobro.value);
-      const limite = cents(tope.value);
-      document.getElementById("ver-cobro").textContent = precio;
-      document.getElementById("ver-tope").textContent = limite;
+      const id = ++revision;
+      const precio = escrito(cobro.value);
+      const limite = escrito(tope.value);
       if (enviando) return;
+      if (id !== revision) return;
+      if (!precio || !limite) {
+        frase.className = "no";
+        frase.textContent = "Escribe el cobro y el tope en centavos, por ejemplo 0.15.";
+        pagar.disabled = true;
+        pagar.textContent = "No se envía";
+        return;
+      }
       const decision = await fetch("/tienda/decidir?precio=" + precio + "&tope=" + limite).then((r) => r.json());
+      if (id !== revision || enviando) return;
       const alcanza = saldoCliente == null || Number(precio) <= saldoCliente + 1e-8;
       const puede = decision.pagar && alcanza;
       frase.className = puede ? "si" : "no";
       frase.textContent = puede
-        ? decision.respuesta
+        ? decision.respuesta + " Al enviar, ese monto sale ahora a la red."
         : decision.pagar
           ? "Sí cabe en el tope, pero el cliente solo tiene " + cents(saldoCliente) + " USDC. No se firmó nada."
           : decision.respuesta;
       pagar.disabled = !puede;
-      pagar.textContent = puede ? "Pagar " + precio : "No se paga";
+      pagar.textContent = puede ? "Enviar " + precio + " a la red" : "No se envía";
     }
 
     pagar.addEventListener("click", async () => {
       enviando = true;
       pagar.disabled = true;
       frase.className = "";
-      frase.textContent = "Enviando el pago de práctica…";
+      frase.textContent = "Escribiendo el movimiento en la red de práctica…";
       try {
+        const precio = escrito(cobro.value);
+        const limite = escrito(tope.value);
         const r = await fetch("/tienda/cobrar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ precio: cents(cobro.value), tope: cents(tope.value) }),
+          body: JSON.stringify({ precio, tope: limite }),
         }).then((x) => x.json());
         frase.className = r.firmado ? "si" : "no";
         frase.textContent = r.respuesta || "No se pudo enviar.";
@@ -132,10 +148,10 @@
         enviando = false;
         await cargar(r.firmado);
         if (r.firmado) {
-          const precio = cents(cobro.value);
-          const alcanza = saldoCliente == null || Number(precio) <= saldoCliente + 1e-8;
+          const precio = escrito(cobro.value);
+          const alcanza = precio && (saldoCliente == null || Number(precio) <= saldoCliente + 1e-8);
           pagar.disabled = !alcanza;
-          pagar.textContent = alcanza ? "Pagar " + precio : "No se paga";
+          pagar.textContent = alcanza ? "Enviar " + precio + " a la red" : "No se envía";
         }
       } catch {
         frase.className = "no";

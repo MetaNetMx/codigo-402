@@ -3,7 +3,7 @@
 import { Keypair, Horizon, TransactionBuilder, Networks, Operation, Asset, BASE_FEE, Memo } from "@stellar/stellar-sdk";
 import { decidirCobro } from "./partes/MetaNetMx/decidir.js";
 
-export const COBRO_MAXIMO = 0.2;
+export const COBRO_MAXIMO = 5;
 const USDC_EMISOR = "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5";
 const USDC = new Asset("USDC", USDC_EMISOR);
 const horizon = new Horizon.Server("https://horizon-testnet.stellar.org");
